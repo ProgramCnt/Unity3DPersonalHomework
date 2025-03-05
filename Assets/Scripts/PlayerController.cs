@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
+    public Transform Character;
     public float moveSpeed;
     public float jumpForce;
     private Vector2 currentMovementInput;
@@ -26,8 +27,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
+        _rigidbody = GetComponentInChildren<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
