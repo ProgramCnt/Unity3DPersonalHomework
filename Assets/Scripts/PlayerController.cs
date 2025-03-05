@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    public Transform Character;
     public float moveSpeed;
+    public float sprintSpeed;
     public float jumpForce;
     private Vector2 currentMovementInput;
     public LayerMask groundLayerMask;
@@ -27,8 +28,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        _rigidbody = GetComponentInChildren<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponentInChildren<Animator>();
+        sprintSpeed = moveSpeed * 1.5f;
     }
 
     private void Start()
@@ -49,7 +51,14 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         Vector3 direction = transform.forward * currentMovementInput.y + transform.right * currentMovementInput.x;
-        direction *= moveSpeed;
+        if (_animator.GetBool("IsSprint"))
+        {
+            direction *= sprintSpeed;
+        }
+        else
+        {
+            direction *= moveSpeed;
+        }
         direction.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = direction;
@@ -69,10 +78,14 @@ public class PlayerController : MonoBehaviour
         if (context.phase == InputActionPhase.Performed)
         {
             currentMovementInput = context.ReadValue<Vector2>();
+            _animator.SetBool("IsMove", true);
+            _animator.SetFloat("PosX", currentMovementInput.x);
+            _animator.SetFloat("PosY", currentMovementInput.y);
         }
         else if (context.phase == InputActionPhase.Canceled)
         {
             currentMovementInput = Vector2.zero;
+            _animator.SetBool("IsMove", false);
         }
     }
 
@@ -85,7 +98,21 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && isGrounded())
         {
-            _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode.Impulse);
+            _animator.SetTrigger("IsJump");
+        }
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            _animator.SetBool("IsMove", true);
+            _animator.SetBool("IsSprint", true);
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            _animator.SetBool("IsMove", false);
+            _animator.SetBool("IsSprint", false);
         }
     }
 
@@ -98,8 +125,6 @@ public class PlayerController : MonoBehaviour
             new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
             new Ray(transform.position + (-transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down)
         };
-
-        Debug.DrawRay(rays[0].origin, rays[0].direction * 0.5f, Color.green);
 
         for (int i = 0; i < rays.Length; i++)
         {
