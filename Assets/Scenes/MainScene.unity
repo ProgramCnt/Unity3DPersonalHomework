@@ -444,11 +444,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: b7648398095f85c4e92e5a20d516a696, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -26100,11 +26100,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: b7648398095f85c4e92e5a20d516a696, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -41170,6 +41170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c42796826f83424fad3eb8288428122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 9036980633536893405}
+  condition: {fileID: 9036980633536893409}
 --- !u!114 &9036980633536893405
 MonoBehaviour:
   m_ObjectHideFlags: 0
