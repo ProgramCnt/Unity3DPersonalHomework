@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
+using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerController : MonoBehaviour
@@ -30,6 +31,11 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody _rigidbody;
 
+    public Image interactUI;
+
+    LayerMask layerMask;
+    RaycastHit hit;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;           //마우스 커서를 고정
+        layerMask = 1 << LayerMask.NameToLayer("Interactable");
     }
 
     private void FixedUpdate()
@@ -53,6 +60,11 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         CameraLook();
+    }
+
+    private void Update()
+    {
+        RayCheck();
     }
 
     void Move()
@@ -175,9 +187,6 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-            LayerMask layerMask = 1 << LayerMask.NameToLayer("Interactable");
-            RaycastHit hit;
-            Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 2f, layerMask);
             if (hit.collider != null)
             {
                 hit.collider.GetComponent<IInteractable>().Interact();
@@ -185,9 +194,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void RayCheck()
+    {
+        Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 2f, layerMask);
+        if (hit.collider == null)
+        {
+            interactUI.gameObject.SetActive(false);
+        }
+        else
+        {
+            interactUI.transform.position = hit.point + Vector3.up * 0.2f;
+            interactUI.gameObject.SetActive(true);
+        }
+    }
+
     private void OnDrawGizmos()
     {
-
         Gizmos.DrawRay(transform.position + Vector3.up, transform.forward * 2f);
         Gizmos.DrawRay(transform.position, Vector3.down * 5f);
     }
