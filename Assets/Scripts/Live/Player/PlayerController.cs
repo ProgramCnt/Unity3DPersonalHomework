@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerController : MonoBehaviour
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
         {
             direction *= sprintSpeed;
             PlayerManager.Instance.Player.condition.Stamina.SubValue(0.5f);
-            Debug.Log("소모" + PlayerManager.Instance.Player.condition.Stamina.curValue);
+            //Debug.Log("소모" + PlayerManager.Instance.Player.condition.Stamina.curValue);
         }
         else
         {
@@ -116,7 +117,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started && isGrounded())
         {
-            _animator.SetTrigger("IsJump");
+            if (PlayerManager.Instance.Player.condition.Stamina.curValue > 10)
+            {
+                PlayerManager.Instance.Player.condition.Stamina.SubValue(10);
+                _animator.SetTrigger("IsJump");
+            }
         }
     }
 
@@ -164,5 +169,26 @@ public class PlayerController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            LayerMask layerMask = 1 << LayerMask.NameToLayer("Interactable");
+            RaycastHit hit;
+            Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 2f, layerMask);
+            if (hit.collider != null)
+            {
+                hit.collider.GetComponent<IInteractable>().Interact();
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.DrawRay(transform.position + Vector3.up, transform.forward * 2f);
+        Gizmos.DrawRay(transform.position, Vector3.down * 5f);
     }
 }

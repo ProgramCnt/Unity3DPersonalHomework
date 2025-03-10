@@ -8,12 +8,3 @@ public interface IInteractable
 {
     void Interact();
 }
-
-public class InteractableObject : MonoBehaviour
-{
-    
-    public void Interact()
-    {
-
-    }
-}

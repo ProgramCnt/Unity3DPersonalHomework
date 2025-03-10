@@ -22,7 +22,7 @@ public class PlayerCondition : MonoBehaviour, IDamageable
         if (!PlayerManager.Instance.Player.controller.IsSprint)
         {
             Stamina.AddValue(Stamina.passiveValue * Time.deltaTime * 5);
-            Debug.Log("스테미나 회복중" + Stamina.curValue);
+            //Debug.Log("스테미나 회복중" + Stamina.curValue);
         }
     }
 
