@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed;
     public float sprintSpeed;
-    public float jumpForce;
     private Vector2 currentMovementInput;
     public LayerMask groundLayerMask;
     bool isMoving;
@@ -37,6 +36,9 @@ public class PlayerController : MonoBehaviour
 
     LayerMask layerMask;
     RaycastHit hit;
+    string text;
+
+    public GameObject ItemSlotBox;
 
     private void Awake()
     {
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;           //마우스 커서를 고정
         layerMask = 1 << LayerMask.NameToLayer("Interactable");
+        text = interactUIText.text;
     }
 
     private void FixedUpdate()
@@ -208,6 +211,7 @@ public class PlayerController : MonoBehaviour
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(hit.point);
 
             interactUI.transform.position = screenPosition + Vector3.up * 0.2f;
+            interactUIText.text = text;
             if (typeof(Door) == hit.collider.GetComponent<IInteractable>().GetType())
             {
                 interactUIText.text = "문열기(E)";
@@ -220,5 +224,20 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.DrawRay(transform.position + Vector3.up, transform.forward * 2f);
         Gizmos.DrawRay(transform.position, Vector3.down * 5f);
+    }
+
+    public void OnUseItem(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            int keyValue = 0;
+            if (int.TryParse(context.control.name, out keyValue))
+            {
+                if (keyValue != 0)
+                {
+                    ItemSlotBox.transform.GetChild(keyValue - 1).GetComponent<ItemSlot>().UseItem();
+                }
+            }
+        }
     }
 }
