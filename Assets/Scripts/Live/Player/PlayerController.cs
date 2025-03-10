@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
 
     public Image interactUI;
+    public TextMeshProUGUI interactUIText;
 
     LayerMask layerMask;
     RaycastHit hit;
@@ -203,7 +205,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            interactUI.transform.position = hit.point + Vector3.up * 0.2f;
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(hit.point);
+
+            interactUI.transform.position = screenPosition + Vector3.up * 0.2f;
+            if (typeof(Door) == hit.collider.GetComponent<IInteractable>().GetType())
+            {
+                interactUIText.text = "¹®¿­±â(E)";
+            }
             interactUI.gameObject.SetActive(true);
         }
     }
