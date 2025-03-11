@@ -40,6 +40,12 @@ public class PlayerController : MonoBehaviour
 
     public GameObject ItemSlotBox;
 
+    [Header("ItemInfo")]
+    public GameObject itemInfo;
+    public Sprite icon;
+    public TextMeshProUGUI itemName;
+    public TextMeshProUGUI itemDescription;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -194,7 +200,7 @@ public class PlayerController : MonoBehaviour
         {
             if (hit.collider != null)
             {
-                hit.collider.GetComponent<IInteractable>().Interact();
+                hit.collider.GetComponent<IInteractable>()?.Interact();
             }
         }
     }
@@ -204,7 +210,11 @@ public class PlayerController : MonoBehaviour
         Physics.Raycast(transform.position + Vector3.up, transform.forward, out hit, 2f, layerMask);
         if (hit.collider == null)
         {
+            icon = null;
+            itemName.text = string.Empty;
+            itemDescription.text = string.Empty;
             interactUI.gameObject.SetActive(false);
+            itemInfo.SetActive(false);
         }
         else
         {
@@ -212,10 +222,19 @@ public class PlayerController : MonoBehaviour
 
             interactUI.transform.position = screenPosition + Vector3.up * 0.2f;
             interactUIText.text = text;
-            if (typeof(Door) == hit.collider.GetComponent<IInteractable>().GetType())
+            if (hit.collider.TryGetComponent<Door>(out var door))
             {
                 interactUIText.text = "¹®¿­±â(E)";
             }
+            else if (hit.collider.TryGetComponent<PotionItem>(out var potionItem))
+            {
+                icon = potionItem.itemData.itemIcon;
+                itemName.text = potionItem.itemData.itemName;
+                itemDescription.text = potionItem.itemData.itemDescription;
+                interactUIText.text = "¹°¾àÈ¹µæ(E)";
+                itemInfo.SetActive(true);
+            }
+            
             interactUI.gameObject.SetActive(true);
         }
     }

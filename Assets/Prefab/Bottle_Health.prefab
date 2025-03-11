@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000010770147514}
   - component: {fileID: 198000014249637824}
   - component: {fileID: 199000013345905904}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GlowParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4815,7 +4815,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000013521377066}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4850,7 +4850,7 @@ GameObject:
   - component: {fileID: 33000010466942934}
   - component: {fileID: 23000010821985464}
   - component: {fileID: 95000013129880336}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: bottle_red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4955,7 +4955,7 @@ GameObject:
   - component: {fileID: 4000010533823780}
   - component: {fileID: 198000011865296186}
   - component: {fileID: 199000014210321866}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StarsParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9759,7 +9759,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000010690109084}
-  m_Layer: 0
+  - component: {fileID: 675880911592936965}
+  - component: {fileID: 4204768467809637315}
+  m_Layer: 6
   m_Name: Bottle_Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9774,7 +9776,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000012970591572}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.37, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9783,3 +9785,40 @@ Transform:
   - {fileID: 4000013521377066}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &675880911592936965
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012970591572}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &4204768467809637315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000012970591572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59900490beb611b4788474ecfc7e6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 3e2596d4bf17d4445ad5dc2c2af73b22, type: 2}
+  itemSlot: {fileID: 0}
